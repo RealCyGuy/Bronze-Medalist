@@ -22,7 +22,7 @@ class BronzeMedalist(commands.Bot):
             print("\nA Deta Project Key is necessary for the bot to function.\n")
             raise RuntimeError
         deta = Deta(deta_key)
-        self.db = deta.Base("BronzeMedalist")
+        self.db = deta.Base(os.environ.get("DETABASE_NAME", "BronzeMedalist"))
         self.startup()
 
     async def on_ready(self):
