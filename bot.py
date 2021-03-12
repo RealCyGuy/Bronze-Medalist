@@ -33,7 +33,7 @@ class BronzeMedalist(commands.Bot):
         print(f"Discord version: {discord.__version__}")
         print(f"Bot version: {__version__}")
         print('-' * 24)
-        print(f"I am logged in and ready!")
+        print("I am logged in and ready!")
 
     def startup(self):
         print('=' * 24)
