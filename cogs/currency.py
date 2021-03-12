@@ -1,7 +1,6 @@
 import asyncio
 import random
 from datetime import datetime, timedelta
-from math import floor
 
 import discord
 from discord.ext import commands
@@ -25,8 +24,10 @@ class Currency(commands.Cog):
         if cooldown:
             difference = now - cooldown
             if difference < timedelta(seconds=20):
-                embed = discord.Embed(title="You are entering competitions too fast!", description="Try again in " + str(
-                    round((timedelta(seconds=20) - difference).total_seconds())) + " seconds.", color=Colours.BRONZE)
+                embed = discord.Embed(title="You are entering competitions too fast!",
+                                      description="Try again in " + str(
+                                          round((timedelta(seconds=20) - difference).total_seconds())) + " seconds.",
+                                      color=Colours.BRONZE)
                 return await ctx.send(ctx.author.mention, embed=embed)
         self.compete_cooldown[str(ctx.author_id)] = now
         embed = discord.Embed(title="Searching for competitions...", description="\u2591" * 10 + " [0.0%]",
@@ -42,8 +43,8 @@ class Currency(commands.Cog):
                 embed.title = "Competing..."
             elif bar > 3:
                 embed.title = "Entering competitions..."
-            embed.description = ("\u2588" * floor(bar)) + (
-                    "\u2591" * (10 - floor(bar)) + " [" + str(round(bar * 10, 1)) + "%]")
+            embed.description = ("\u2588" * round(bar)) + (
+                    "\u2591" * round(10 - bar) + " [" + str(round(bar * 10, 1)) + "%]")
             await msg.edit(embed=embed)
         # Relative weights: 10, 7, 9, 9, 13, 14, 13, 9, 8, 6, 2
         medals_earned = random.choices([None, 6, 7, 8, 14, 15, 16, 17, 19, 20, random.randint(60, 80)],
@@ -56,7 +57,8 @@ class Currency(commands.Cog):
                 self.bot.db.update({"medals": medals}, str(ctx.author_id))
             else:
                 self.bot.db.insert({"medals": medals_earned}, key=str(ctx.author_id))
-            embed.title = ("WOOOOOOW!" if medals_earned > 59 else "Wow!") + " You won " + str(medals_earned) + " :third_place:! You now have " + "{:,}".format(medals) + " :third_place:."
+            embed.title = ("WOOOOOOW!" if medals_earned > 59 else "Wow!") + " You won " + str(
+                medals_earned) + " :third_place:! You now have " + "{:,}".format(medals) + " :third_place:."
         else:
             embed.title = "You won zero :third_place:. Better luck next time!"
         await msg.edit(embed=embed)
@@ -72,7 +74,8 @@ class Currency(commands.Cog):
             medals = user_db["medals"]
         else:
             medals = 0
-        embed = discord.Embed(title=user.name + "#" + user.discriminator + "'s balance", description="**" + "{:,}".format(medals) + "** :third_place:", colour=Colours.BRONZE)
+        embed = discord.Embed(title=user.name + "#" + user.discriminator + "'s balance",
+                              description="**" + "{:,}".format(medals) + "** :third_place:", colour=Colours.BRONZE)
         await ctx.send(ctx.author.mention, embed=embed)
 
 
