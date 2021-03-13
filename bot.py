@@ -3,10 +3,9 @@ __version__ = "0.1.0"
 import os
 
 import discord
-from discord.ext import commands
-from discord_slash import SlashCommand, SlashContext
 from deta import Deta
-
+from discord.ext import commands
+from discord_slash import SlashCommand
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -54,7 +53,6 @@ class BronzeMedalist(commands.Bot):
 bot = BronzeMedalist()
 slash = SlashCommand(bot, override_type=True, sync_commands=True)
 bot.load_cogs()
-
 
 token = os.environ.get("TOKEN", None)
 if token is None or len(token.strip()) == 0:
