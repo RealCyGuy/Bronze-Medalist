@@ -1,6 +1,7 @@
 import asyncio
 import random
 from datetime import datetime, timedelta
+from math import ceil
 
 import discord
 from discord.ext import commands
@@ -39,6 +40,7 @@ class Currency(commands.Cog):
             bar += random.uniform(1, 4)
             if bar >= 9.5:
                 bar = 10.0
+                embed.title = "Waiting for results..."
             elif bar > 6:
                 embed.title = "Competing..."
             elif bar > 3:
@@ -64,7 +66,7 @@ class Currency(commands.Cog):
         await msg.edit(embed=embed)
 
     @cog_ext.cog_slash(name="balance", description="See how many bronze medals you or another user has.",
-                       options=[create_option(name="user", description="the user you want to see the balance of.",
+                       options=[create_option(name="user", description="The user you want to see the balance of.",
                                               option_type=6, required=False)], guild_ids=guild_ids)
     async def balance(self, ctx: SlashContext, user: discord.User = None):
         await ctx.respond(eat=True)
@@ -76,6 +78,38 @@ class Currency(commands.Cog):
             medals = 0
         embed = discord.Embed(title=user.name + "#" + user.discriminator + "'s balance",
                               description="**" + "{:,}".format(medals) + "** :third_place:", colour=Colours.BRONZE)
+        await ctx.send(ctx.author.mention, embed=embed)
+
+    @cog_ext.cog_slash(name="give", description="Give some medals to another user!",
+                       options=[create_option(name="user", description="The user you want to give medals to.",
+                                              option_type=6, required=True),
+                                create_option(name="amount", description="The amount of medals to give.", option_type=4,
+                                              required=True)],
+                       guild_ids=guild_ids)
+    async def give(self, ctx: SlashContext, user: discord.User, amount: int):
+        await ctx.respond(eat=True)
+        if amount < 1:
+            return await ctx.send("you have to give at least one medal")
+        user_db = self.bot.db.get(str(ctx.author_id))
+        medals = 0
+        if user_db:
+            medals = user_db["medals"]
+        if medals < amount:
+            return await ctx.send("not enough")
+        self.bot.db.update({"medals": medals - amount}, str(ctx.author_id))
+        medals_receiving = ceil(amount * 0.9)
+        receiver_db = self.bot.db.get(str(user.id))
+        receiver_medals = 0
+        if receiver_db:
+            receiver_medals = receiver_db["medals"]
+            self.bot.db.update({"medals": receiver_medals + medals_receiving}, str(user.id))
+        else:
+            self.bot.db.insert({"medals": medals_receiving}, str(user.id))
+        embed = discord.Embed(
+            title=f"Gave {str(medals_receiving)} :third_place: to {user.name}#{user.discriminator} after 10% tax.",
+            description="You now have " +
+                        str(medals - amount) + " :third_place: and they have " + str(
+                receiver_medals + medals_receiving) + " :third_place:.", colour=Colours.BRONZE)
         await ctx.send(ctx.author.mention, embed=embed)
 
 
