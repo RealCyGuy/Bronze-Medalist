@@ -16,12 +16,7 @@ class BronzeMedalist(commands.Bot):
         super().__init__(command_prefix="b.", activity=discord.Game("bronze medals op"), intents=discord.Intents.all(), *args, **kwargs)
         self.remove_command("help")
         self.loading_cogs = ["cogs.currency", "cogs.misc"]
-        deta_key = os.environ.get("DETA_KEY", None)
-        if deta_key is None or len(deta_key.strip()) == 0:
-            print("\nA Deta Project Key is necessary for the bot to function.\n")
-            raise RuntimeError
-        deta = Deta(deta_key)
-        self.db = deta.Base(os.environ.get("DETABASE_NAME", "BronzeMedalist"))
+        self.db = self.init_deta_base()
         self.event_starters = list(
             map(int, str(os.environ.get("EVENT_STARTER_IDS", None)).split(","))) if os.environ.get(
             "EVENT_STARTER_IDS", None) else None
@@ -32,12 +27,20 @@ class BronzeMedalist(commands.Bot):
     async def on_ready(self):
         print('-' * 24)
         print('Logged in as:')
-        print(bot.user.name + "#" + bot.user.discriminator)
-        print("Id: " + str(bot.user.id))
+        print(self.user.name + "#" + self.user.discriminator)
+        print("Id: " + str(self.user.id))
         print(f"Discord version: {discord.__version__}")
         print(f"Bot version: {__version__}")
         print('-' * 24)
         print("I am logged in and ready!")
+
+    def init_deta_base(self):
+        deta_key = os.environ.get("DETA_KEY", None)
+        if deta_key is None or len(deta_key.strip()) == 0:
+            print("\nA Deta Project Key is necessary for the bot to function.\n")
+            raise RuntimeError
+        deta = Deta(deta_key)
+        return deta.Base(os.environ.get("DETABASE_NAME", "BronzeMedalist"))
 
     def startup(self):
         print('=' * 24)
