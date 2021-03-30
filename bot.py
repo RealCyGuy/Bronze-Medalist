@@ -16,7 +16,6 @@ class BronzeMedalist(commands.Bot):
         super().__init__(command_prefix="b.", activity=discord.Game("bronze medals op"), intents=discord.Intents.all(), *args, **kwargs)
         self.remove_command("help")
         self.loading_cogs = ["cogs.currency", "cogs.misc"]
-        self.db = self.init_deta_base()
         self.event_starters = list(
             map(int, str(os.environ.get("EVENT_STARTER_IDS", None)).split(","))) if os.environ.get(
             "EVENT_STARTER_IDS", None) else None
@@ -34,7 +33,7 @@ class BronzeMedalist(commands.Bot):
         print('-' * 24)
         print("I am logged in and ready!")
 
-    def init_deta_base(self):
+    def db(self):
         deta_key = os.environ.get("DETA_KEY", None)
         if deta_key is None or len(deta_key.strip()) == 0:
             print("\nA Deta Project Key is necessary for the bot to function.\n")

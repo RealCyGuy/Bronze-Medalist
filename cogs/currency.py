@@ -56,13 +56,13 @@ class Currency(commands.Cog):
             medals_earned = random.choices([None, 6, 7, 8, 14, 15, 16, 17, 19, 20, random.randint(60, 80)],
                                            cum_weights=(10, 17, 26, 35, 48, 62, 75, 84, 92, 98, 100))[0]
             if medals_earned:
-                user = self.bot.db.get(str(ctx.author_id))
+                user = self.bot.db().get(str(ctx.author_id))
                 medals = medals_earned
                 if user:
                     medals = medals_earned + user["medals"]
-                    self.bot.db.update({"medals": medals}, str(ctx.author_id))
+                    self.bot.db().update({"medals": medals}, str(ctx.author_id))
                 else:
-                    self.bot.db.insert({"medals": medals_earned}, key=str(ctx.author_id))
+                    self.bot.db().insert({"medals": medals_earned}, key=str(ctx.author_id))
                 nonlocal result
                 result = ("WOOOOOOW!" if medals_earned > 59 else "Wow!") + " You won " + str(
                     medals_earned) + " :third_place:! You now have " + "{:,}".format(medals) + " :third_place:."
@@ -77,7 +77,7 @@ class Currency(commands.Cog):
                                               option_type=6, required=False)], guild_ids=guild_ids)
     async def balance(self, ctx: SlashContext, user: discord.User = None):
         user = user if user else ctx.author
-        user_db = self.bot.db.get(str(user.id))
+        user_db = self.bot.db().get(str(user.id))
         if user_db:
             medals = user_db["medals"]
         else:
@@ -95,21 +95,21 @@ class Currency(commands.Cog):
     async def give(self, ctx: SlashContext, user: discord.User, amount: int):
         if amount < 1:
             return await ctx.send("you have to give at least one medal")
-        user_db = self.bot.db.get(str(ctx.author_id))
+        user_db = self.bot.db().get(str(ctx.author_id))
         medals = 0
         if user_db:
             medals = user_db["medals"]
         if medals < amount:
             return await ctx.send("not enough")
-        self.bot.db.update({"medals": medals - amount}, str(ctx.author_id))
+        self.bot.db().update({"medals": medals - amount}, str(ctx.author_id))
         medals_receiving = ceil(amount * 0.9)
-        receiver_db = self.bot.db.get(str(user.id))
+        receiver_db = self.bot.db().get(str(user.id))
         receiver_medals = 0
         if receiver_db:
             receiver_medals = receiver_db["medals"]
-            self.bot.db.update({"medals": receiver_medals + medals_receiving}, str(user.id))
+            self.bot.db().update({"medals": receiver_medals + medals_receiving}, str(user.id))
         else:
-            self.bot.db.insert({"medals": medals_receiving}, str(user.id))
+            self.bot.db().insert({"medals": medals_receiving}, str(user.id))
         embed = discord.Embed(
             title=f"Gave {str(medals_receiving)} :third_place: to {user.name}#{user.discriminator} after 10% tax.",
             description="You now have " +
@@ -145,11 +145,11 @@ class Currency(commands.Cog):
             if winner:
                 embed.description = f"{winner.mention} won {medals} :third_place:."
                 try:
-                    winner_db = self.bot.db.get(str(winner.id))
+                    winner_db = self.bot.db().get(str(winner.id))
                     if winner_db:
-                        self.bot.db.update({"medals": winner_db["medals"] + medals}, str(winner.id))
+                        self.bot.db().update({"medals": winner_db["medals"] + medals}, str(winner.id))
                     else:
-                        self.bot.db.insert({"medals": medals}, str(winner.id))
+                        self.bot.db().insert({"medals": medals}, str(winner.id))
                 except http.client.RemoteDisconnected:
                     embed.description += " But an error occured."
             else:
