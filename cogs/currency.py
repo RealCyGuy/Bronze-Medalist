@@ -11,6 +11,7 @@ from discord_slash.utils.manage_commands import create_option
 
 from core.colours import Colours
 from core.guild_ids import guild_ids
+import core.embeds as embeds
 
 
 class Currency(commands.Cog):
@@ -93,14 +94,18 @@ class Currency(commands.Cog):
                                               required=True)],
                        guild_ids=guild_ids)
     async def give(self, ctx: SlashContext, user: discord.User, amount: int):
+        if user == ctx.author:
+            return await ctx.send(embed=embeds.error("you can't send medals to yourself"))
+        # if user.bot:
+        #     return await ctx.send(embed=embeds.error("you can't send medals to bots"))
         if amount < 1:
-            return await ctx.send("you have to give at least one medal")
+            return await ctx.send(embed=embeds.error("you have to give at least one medal"))
         user_db = self.bot.db().get(str(ctx.author_id))
         medals = 0
         if user_db:
             medals = user_db["medals"]
         if medals < amount:
-            return await ctx.send("not enough")
+            return await ctx.send(embed=embeds.error("you don't have enough medals to give"))
         self.bot.db().update({"medals": medals - amount}, str(ctx.author_id))
         medals_receiving = ceil(amount * 0.9)
         receiver_db = self.bot.db().get(str(user.id))
