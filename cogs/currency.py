@@ -58,20 +58,17 @@ class Currency(commands.Cog):
             if medals_earned:
                 user = self.bot.db.get(str(ctx.author_id))
                 medals = medals_earned
-                try:
-                    if user:
-                        medals = medals_earned + user["medals"]
-                        self.bot.db.update({"medals": medals}, str(ctx.author_id))
-                    else:
-                        self.bot.db.insert({"medals": medals_earned}, key=str(ctx.author_id))
-                except http.client.RemoteDisconnected:
-                    return
+                if user:
+                    medals = medals_earned + user["medals"]
+                    self.bot.db.update({"medals": medals}, str(ctx.author_id))
+                else:
+                    self.bot.db.insert({"medals": medals_earned}, key=str(ctx.author_id))
                 nonlocal result
                 result = ("WOOOOOOW!" if medals_earned > 59 else "Wow!") + " You won " + str(
                     medals_earned) + " :third_place:! You now have " + "{:,}".format(medals) + " :third_place:."
 
         result = "You won zero :third_place:. Better luck next time!"
-        await asyncio.gather(load(), update_medals())
+        await asyncio.gather(load(), update_medals(), return_exceptions=True)
         embed.title = result
         await msg.edit(embed=embed)
 
