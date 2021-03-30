@@ -107,7 +107,8 @@ class Currency(commands.Cog):
         if medals < amount:
             return await ctx.send(embed=embeds.error("you don't have enough medals to give"))
         self.bot.db().update({"medals": medals - amount}, str(ctx.author_id))
-        medals_receiving = ceil(amount * 0.9)
+        # medals_receiving = ceil(amount * 0.9)
+        medals_receiving = amount
         receiver_db = self.bot.db().get(str(user.id))
         receiver_medals = 0
         if receiver_db:
@@ -116,7 +117,7 @@ class Currency(commands.Cog):
         else:
             self.bot.db().insert({"medals": medals_receiving}, str(user.id))
         embed = discord.Embed(
-            title=f"Gave {str(medals_receiving)} :third_place: to {user.name}#{user.discriminator} after 10% tax.",
+            title=f"Gave {str(medals_receiving)} :third_place: to {user.name}#{user.discriminator}.",
             description="You now have " +
                         str(medals - amount) + " :third_place: and they have " + str(
                 receiver_medals + medals_receiving) + " :third_place:.", colour=Colours.BRONZE)
