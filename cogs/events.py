@@ -35,7 +35,10 @@ class Events(commands.Cog):
             event_time = random.randint(4, 7)
             await msg.edit(content=f"Event started! You can send messages for {event_time} seconds!")
             await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=True)
-            await asyncio.sleep(event_time)
+            while event_time > 0:
+                await asyncio.sleep(1)
+                event_time -= 1
+                await msg.edit(content=f"Event started! You can send messages for {event_time} more seconds!")
             await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False)
             winner = None
             while not winner and len(event["users"]) > 0:
