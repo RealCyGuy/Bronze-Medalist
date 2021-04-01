@@ -55,7 +55,7 @@ class BronzeMedalist(commands.Bot):
                 self.load_extension(cog)
                 print(f"Successfully loaded {cog}.")
             except Exception as e:
-                print(f"Failed to load {cog}. Error type: {type(e).__name__}")
+                print(f"Failed to load {cog}. Error: {e}")
 
     async def on_message(self, message):
         if message.channel.id == self.last_event["channel"] and not message.author.bot:
