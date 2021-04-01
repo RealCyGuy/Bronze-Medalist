@@ -13,9 +13,10 @@ load_dotenv()
 
 class BronzeMedalist(commands.Bot):
     def __init__(self, *args, **kwargs):
-        super().__init__(command_prefix="b.", activity=discord.Game("bronze medals op"), intents=discord.Intents.all(), *args, **kwargs)
+        super().__init__(command_prefix=os.environ.get("PREFIX", "b."), activity=discord.Game("bronze medals op"),
+                         intents=discord.Intents.all(), *args, **kwargs)
         self.remove_command("help")
-        self.loading_cogs = ["cogs.currency", "cogs.misc"]
+        self.loading_cogs = ["cogs.currency", "cogs.events", "cogs.misc"]
         self.event_starters = list(
             map(int, str(os.environ.get("EVENT_STARTER_IDS", None)).split(","))) if os.environ.get(
             "EVENT_STARTER_IDS", None) else None
