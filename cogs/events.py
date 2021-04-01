@@ -16,6 +16,18 @@ class Events(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    async def update_winner(self, winner, medals):
+        description = f"{winner.mention} won {medals} :third_place:."
+        try:
+            winner_db = self.bot.db().get(str(winner.id))
+            if winner_db:
+                self.bot.db().update({"medals": winner_db["medals"] + medals}, str(winner.id))
+            else:
+                self.bot.db().insert({"medals": medals}, str(winner.id))
+        except http.client.RemoteDisconnected:
+            description += " But an error occured."
+        return description
+
     @commands.command("last")
     async def last(self, ctx: commands.Context, medals: int = 1000):
         if ctx.author.id in self.bot.event_starters:
@@ -45,15 +57,7 @@ class Events(commands.Cog):
                 winner = ctx.guild.get_member(event["users"].pop())
             embed.title = "Last Message Event Results"
             if winner:
-                embed.description = f"{winner.mention} won {medals} :third_place:."
-                try:
-                    winner_db = self.bot.db().get(str(winner.id))
-                    if winner_db:
-                        self.bot.db().update({"medals": winner_db["medals"] + medals}, str(winner.id))
-                    else:
-                        self.bot.db().insert({"medals": medals}, str(winner.id))
-                except http.client.RemoteDisconnected:
-                    embed.description += " But an error occured."
+                embed.description = await self.update_winner(winner, medals)
             else:
                 embed.description = "No one won."
             await ctx.send(embed=embed)
@@ -61,6 +65,32 @@ class Events(commands.Cog):
             event["in_progress"] = False
             event["users"] = []
             event["channel"] = 0
+
+    @commands.command("react")
+    async def react(self, ctx: commands.Context, medals: int = 1000):
+        if ctx.author.id in self.bot.event_starters:
+            await ctx.message.delete()
+            embed = discord.Embed(
+                title="First Reaction Event!",
+                description=f"In `First Reaction`, the first person who reacts to this message wins {medals} :third_place:. Hosted by {ctx.author.mention}!",
+                colour=Colours.BRONZE)
+
+            msg = await ctx.send("Event started.", embed=embed)
+            await msg.add_reaction("\N{THIRD PLACE MEDAL}")
+
+            def check(r, u):
+                return msg.id == r.message.id and r.emoji == "\N{THIRD PLACE MEDAL}" and not u.bot
+
+            embed.title = "Last Message Event Results"
+
+            try:
+                winner = (await self.bot.wait_for("reaction_add", check=check, timeout=120))[1]
+            except asyncio.TimeoutError:
+                embed.description = "No one won."
+            else:
+                embed.description = await self.update_winner(winner, medals)
+            await ctx.send(embed=embed)
+            await msg.edit(content="Event has ended.")
 
 
 def setup(bot):
