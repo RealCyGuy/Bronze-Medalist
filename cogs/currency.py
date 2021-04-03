@@ -1,22 +1,23 @@
 import asyncio
 import random
 from datetime import datetime, timedelta
-from math import ceil
+from math import floor
 
 import discord
 from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
 from discord_slash.utils.manage_commands import create_option
 
+import core.embeds as embeds
 from core.colours import Colours
 from core.guild_ids import guild_ids
-import core.embeds as embeds
 
 
 class Currency(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.compete_cooldown = {}
+        self.interest_cooldown = {}
 
     @cog_ext.cog_slash(name="compete", description="Compete to earn some bronze medals.", guild_ids=guild_ids)
     async def compete(self, ctx: SlashContext):
@@ -71,6 +72,35 @@ class Currency(commands.Cog):
         await asyncio.gather(load(), update_medals(), return_exceptions=True)
         embed.title = result
         await msg.edit(embed=embed)
+
+    @cog_ext.cog_slash(name="interest", description="Gain 2% of your current medals.", guild_ids=guild_ids)
+    async def interest(self, ctx: SlashContext):
+        cooldown = self.interest_cooldown.get(str(ctx.author_id), None)
+        now = datetime.now()
+        if cooldown:
+            difference = now - cooldown
+            if difference < timedelta(seconds=76):
+                embed = discord.Embed(title="You are collecting interest too fast!",
+                                      description="Try again in " + str(
+                                          round((timedelta(seconds=76) - difference).total_seconds())) + " seconds.",
+                                      color=Colours.BRONZE)
+                return await ctx.send(ctx.author.mention, embed=embed)
+        self.interest_cooldown[str(ctx.author_id)] = now
+        user = self.bot.db().get(str(ctx.author_id))
+        medals = 0
+        medals_earned = 0
+        total_medals = 0
+        if user:
+            medals = user["medals"]
+            medals_earned = floor(medals * 0.02)
+            total_medals = medals + medals_earned
+            self.bot.db().update({"medals": total_medals}, str(ctx.author_id))
+        embed = discord.Embed(title="Your seventy six second-ly interest report.", colour=Colours.BRONZE)
+        if medals_earned:
+            embed.description = f"With 2% interest, you earned {medals_earned} :third_place: and now have {total_medals} :third_place:."
+        else:
+            embed.description = f"Your {medals} :third_place: aren't enough to get you any interest, try `/compete`."
+        await ctx.send(embed=embed)
 
     @cog_ext.cog_slash(name="balance", description="See how many bronze medals you or another user has.",
                        options=[create_option(name="user", description="The user you want to see the balance of.",
