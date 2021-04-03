@@ -1,4 +1,5 @@
 discord.py
-discord-py-slash-command
+# discord-py-slash-command
 python-dotenv
 deta
+git+https://github.com/LordOfPolls/discord-py-slash-command.git@override
