@@ -19,7 +19,7 @@ class BronzeMedalist(commands.Bot):
                          activity=discord.Game("bronze medals op | v" + __version__),
                          intents=discord.Intents.all(), *args, **kwargs)
         self.remove_command("help")
-        self.loading_cogs = ["cogs.currency", "cogs.events", "cogs.misc"]
+        self.loading_cogs = ["cogs.currency", "cogs.events", "cogs.misc", "jishaku"]
         self.event_starters = list(
             map(int, str(os.environ.get("EVENT_STARTER_IDS", None)).split(","))) if os.environ.get(
             "EVENT_STARTER_IDS", None) else None

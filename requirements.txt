@@ -3,3 +3,4 @@ discord.py
 python-dotenv
 deta
 git+https://github.com/LordOfPolls/discord-py-slash-command.git@override
+jishaku

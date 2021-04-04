@@ -22,7 +22,7 @@ Then you can run `bot.py` to start the bot.
 - `DETABASE_NAME` - Name of deta base for multiple bases in one deta project.
 - `EVENT_STARTER_IDS` - Ids for event starters. To start events, the bot needs the manage messages and manage roles
   permissions.
-- `PREFIX` - Custom prefix for starting events. Defaults to b.
+- `PREFIX` - Custom prefix for starting events and using the jishaku module. Defaults to b.
 
 ## Events
 
