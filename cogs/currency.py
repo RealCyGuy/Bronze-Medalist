@@ -83,6 +83,7 @@ class Currency(commands.Cog):
     @cog_ext.cog_slash(name="balance", description="See how many bronze medals you or another user has.",
                        options=[create_option(name="user", description="The user you want to see the balance of.",
                                               option_type=6, required=False)], guild_ids=guild_ids)
+    @commands.cooldown(1, 2, commands.BucketType.user)
     async def balance(self, ctx: SlashContext, user: discord.User = None):
         user = user if user else ctx.author
         user_db = self.bot.db().get(str(user.id))
@@ -100,6 +101,7 @@ class Currency(commands.Cog):
                                 create_option(name="amount", description="The amount of medals to give.", option_type=4,
                                               required=True)],
                        guild_ids=guild_ids)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def give(self, ctx: SlashContext, user: discord.User, amount: int):
         if user == ctx.author:
             return await ctx.send(embed=embeds.error("you can't send medals to yourself"))
