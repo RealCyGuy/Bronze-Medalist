@@ -8,6 +8,8 @@ from discord.ext import commands
 from discord_slash import SlashCommand
 from dotenv import load_dotenv
 
+from core.colours import Colours
+
 load_dotenv()
 
 
@@ -65,6 +67,14 @@ class BronzeMedalist(commands.Bot):
             else:
                 self.last_event["users"].append(message.author.id)
         await self.process_commands(message)
+
+    async def on_slash_command_error(self, context, exception):
+        if isinstance(exception, commands.CommandOnCooldown):
+            embed = discord.Embed(title="You are going too fast!",
+                                  description=f"Try again in {exception.retry_after:.2f} seconds.", colour=Colours.RED)
+            await context.send(embed=embed)
+        else:
+            raise exception
 
 
 bot = BronzeMedalist()
