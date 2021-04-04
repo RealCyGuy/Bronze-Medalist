@@ -16,22 +16,21 @@ import core.embeds as embeds
 class Currency(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        # self.compete_cooldown = {}
+        self.compete_cooldown = {}
 
     @cog_ext.cog_slash(name="compete", description="Compete to earn some bronze medals.", guild_ids=guild_ids)
-    @commands.cooldown(1, 20, commands.BucketType.user)
     async def compete(self, ctx: SlashContext):
-        # cooldown = self.compete_cooldown.get(str(ctx.author_id), None)
-        # now = datetime.now()
-        # if cooldown:
-        #     difference = now - cooldown
-        #     if difference < timedelta(seconds=20):
-        #         embed = discord.Embed(title="You are entering competitions too fast!",
-        #                               description="Try again in " + str(
-        #                                   round((timedelta(seconds=20) - difference).total_seconds())) + " seconds.",
-        #                               color=Colours.BRONZE)
-        #         return await ctx.send(ctx.author.mention, embed=embed)
-        # self.compete_cooldown[str(ctx.author_id)] = now
+        cooldown = self.compete_cooldown.get(str(ctx.author_id), None)
+        now = datetime.now()
+        if cooldown:
+            difference = now - cooldown
+            if difference < timedelta(seconds=20):
+                embed = discord.Embed(title="You are entering competitions too fast!",
+                                      description="Try again in " + str(
+                                          round((timedelta(seconds=20) - difference).total_seconds())) + " seconds.",
+                                      color=Colours.BRONZE)
+                return await ctx.send(ctx.author.mention, embed=embed)
+        self.compete_cooldown[str(ctx.author_id)] = now
         embed = discord.Embed(title="Searching for competitions...", description="\u2591" * 10 + " [0.0%]",
                               colour=Colours.BRONZE)
         msg = await ctx.send(embed=embed)
