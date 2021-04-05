@@ -1,6 +1,5 @@
 import asyncio
 import random
-from datetime import datetime, timedelta
 from math import floor
 
 import discord
@@ -73,7 +72,7 @@ class Currency(commands.Cog):
             medals_earned = floor(medals * 0.02)
             total_medals = medals + medals_earned
             self.bot.db().update({"medals": total_medals}, str(ctx.author_id))
-        embed = discord.Embed(title="Your seventy six second-ly interest report.", colour=Colours.BRONZE)
+        embed = discord.Embed(title="Your seventy-six second-ly interest report.", colour=Colours.BRONZE)
         if medals_earned:
             embed.description = f"With 2% interest, you earned {medals_earned} :third_place: and now have {total_medals} :third_place:."
         else:
@@ -104,17 +103,17 @@ class Currency(commands.Cog):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def give(self, ctx: SlashContext, user: discord.User, amount: int):
         if user == ctx.author:
-            return await ctx.send(embed=embeds.error("you can't send medals to yourself"))
+            return await ctx.send(embed=embeds.error("You can't send medals to yourself."))
         # if user.bot:
-        #     return await ctx.send(embed=embeds.error("you can't send medals to bots"))
+        #     return await ctx.send(embed=embeds.error("You can't send medals to bots."))
         if amount < 1:
-            return await ctx.send(embed=embeds.error("you have to give at least one medal"))
+            return await ctx.send(embed=embeds.error("You have to give at least one medal."))
         user_db = self.bot.db().get(str(ctx.author_id))
         medals = 0
         if user_db:
             medals = user_db["medals"]
         if medals < amount:
-            return await ctx.send(embed=embeds.error("you don't have enough medals to give"))
+            return await ctx.send(embed=embeds.error("You don't have enough medals to give."))
         self.bot.db().update({"medals": medals - amount}, str(ctx.author_id))
         # medals_receiving = ceil(amount * 0.9)
         medals_receiving = amount
@@ -130,6 +129,33 @@ class Currency(commands.Cog):
             description="You now have " +
                         str(medals - amount) + " :third_place: and they have " + str(
                 receiver_medals + medals_receiving) + " :third_place:.", colour=Colours.BRONZE)
+        await ctx.send(embed=embed)
+
+    @cog_ext.cog_slash(name="fortysixpercentchancetodouble",
+                       description="A forty-six chance to double the medals you gamble!",
+                       options=[
+                           create_option(name="amount", description="The amount of medals to gamble.", option_type=4,
+                                         required=True)],
+                       guild_ids=guild_ids)
+    @commands.cooldown(1, 8, commands.BucketType.user)
+    async def fortysixpercentchancetodouble(self, ctx: SlashContext, amount: int):
+        if amount < 1:
+            return await ctx.send(embed=embeds.error("You have to gamble at least one medal."))
+        user = self.bot.db().get(str(ctx.author_id))
+        medals = 0
+        if user:
+            medals = user["medals"]
+        if amount > medals:
+            return await ctx.send(embed=embeds.error("You don't have enough medals to gamble!"))
+        embed = discord.Embed(colour=Colours.BRONZE)
+        if random.random() < 0.46:
+            updated_medals = medals + amount
+            embed.title = f"You won {amount} :third_place:!"
+        else:
+            updated_medals = medals - amount
+            embed.title = f"Oof, you lost {amount} :third_place:."
+        self.bot.db().update({"medals": updated_medals}, str(ctx.author_id))
+        embed.description = f"You now have {updated_medals} :third_place:."
         await ctx.send(embed=embed)
 
 
