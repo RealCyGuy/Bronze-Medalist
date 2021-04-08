@@ -85,5 +85,4 @@ token = os.environ.get("TOKEN", None)
 if token is None or len(token.strip()) == 0:
     print("\nA bot token is necessary for the bot to function.\n")
     raise RuntimeError
-else:
-    bot.run(token)
+bot.run(token)
