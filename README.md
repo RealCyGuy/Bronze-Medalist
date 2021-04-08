@@ -1,5 +1,7 @@
 # Bronze Medalist
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/450243f080fb4e51b27a0a7f51de00a7)](https://app.codacy.com/gh/RealCyGuy/Bronze-Medalist?utm_source=github.com&utm_medium=referral&utm_content=RealCyGuy/Bronze-Medalist&utm_campaign=Badge_Grade_Settings)
+
 > Discord economy bot with slash commands made with discord.py.
 
 ## Invite link
