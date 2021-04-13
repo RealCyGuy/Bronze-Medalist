@@ -60,6 +60,27 @@ class Currency(commands.Cog):
         embed.title = result
         await msg.edit(embed=embed)
 
+    @cog_ext.cog_slash(name="dig", description="Dig up some medals.", guild_ids=guild_ids)
+    @commands.cooldown(1, 20, commands.BucketType.user)
+    async def dig(self, ctx: SlashContext):
+        medals_earned = random.randrange(20, 30)
+        user = self.bot.db().get(str(ctx.author_id))
+        if user:
+            medals = medals_earned + user["medals"]
+            self.bot.db().update({"medals": medals}, str(ctx.author_id))
+        else:
+            medals = medals_earned
+            self.bot.db().insert({"medals": medals_earned}, key=str(ctx.author_id))
+
+        place = random.choice(
+            ["the ground", "a place", "a whiteboard", "china", "sample text", "your room", "a swimming pool",
+             "my pocket", "the library's comic section", "the alley between two competing fast food chains",
+             "the pineapple basket", "the bank", "a grass molecule", "air", "that ice cream place", "a napkin factory",
+             "your medals", "water"])
+        embed = discord.Embed(title=f"You dug {medals_earned} :third_place: up in {place}.",
+                              description="You now have {:,}:third_place:.".format(medals), colour=Colours.BRONZE)
+        await ctx.send(embed=embed)
+
     @cog_ext.cog_slash(name="interest", description="Gain 2% of your current medals.", guild_ids=guild_ids)
     @commands.cooldown(1, 76, commands.BucketType.user)
     async def interest(self, ctx: SlashContext):
