@@ -26,6 +26,7 @@ Then you can run `bot.py` to start the bot.
   permissions.
 - `PREFIX` - Custom prefix for starting events and using the jishaku module. Defaults to b.
 - `JISHAKU_NO_UNDERSCORE` - Don't use underscores for jishaku's repl if set to true.
+- `INVITE` - Custom invite link for the invite command.
 
 ## Events
 

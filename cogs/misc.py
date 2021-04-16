@@ -1,3 +1,5 @@
+import os
+
 import discord
 from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
@@ -15,6 +17,7 @@ class Misc(commands.Cog):
     async def invite(self, ctx: SlashContext):
         invite = "https://discord.com/api/oauth2/authorize?client_id=" + str(
             self.bot.user.id) + "&permissions=2048&scope=applications.commands%20bot"
+        invite = os.environ.get("INVITE", invite)
         embed = discord.Embed(description=f"You can invite me to your server with my [invite link]({invite})!",
                               colour=Colours.BRONZE)
         await ctx.send(embed=embed)
