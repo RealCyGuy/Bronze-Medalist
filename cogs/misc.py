@@ -65,6 +65,12 @@ class Misc(commands.Cog):
             title=f"Source code of {prefix}{command}.",
             colour=Colours.BRONZE)
 
+        sourcecode = sourcecode.splitlines(True)
+        for index, line in enumerate(sourcecode):
+            if line.startswith(" " * 4):
+                sourcecode[index] = line[4:]
+        sourcecode = "".join(sourcecode)
+
         file_end = file_start + len(lines) - 1
         if len(sourcecode) > 1900:
             embed.description = "{}/blob/{}/{}#L{}-L{}".format(source_url, branch, location, file_start, file_end)
