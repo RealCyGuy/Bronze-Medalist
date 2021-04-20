@@ -41,7 +41,7 @@ class Misc(commands.Cog):
             return await ctx.send(embed=not_found)
 
         src = obj.callback.__code__
-        lines, firstlineno = inspect.getsourcelines(src)
+        lines, file_start = inspect.getsourcelines(src)
         sourcecode = inspect.getsource(src).replace("```", "")
         if obj.callback.__module__.startswith("discord"):
             location = obj.callback.__module__.replace(".", "/") + ".py"
@@ -59,14 +59,12 @@ class Misc(commands.Cog):
             title=f"Source code of {prefix}{command}.",
             colour=Colours.BRONZE)
 
+        file_end = file_start + len(lines) - 1
         if len(sourcecode) > 1900:
-            embed.description = "{}/blob/prod/{}#L{}-L{}".format(source_url, location, firstlineno,
-                                                                 firstlineno + len(lines) - 1)
+            embed.description = "{}/blob/prod/{}#L{}-L{}".format(source_url, location, file_start, file_end)
         else:
-            embed.description = "<{}/blob/prod/{}#L{}-L{}>\n```py\n{}```".format(source_url, location,
-                                                                                 firstlineno,
-                                                                                 firstlineno + len(lines) - 1,
-                                                                                 sourcecode)
+            embed.description = "<{}/blob/prod/{}#L{}-L{}>\n```py\n{}```".format(source_url, location, file_start,
+                                                                                 file_end, sourcecode)
         await ctx.send(embed=embed)
 
 
