@@ -63,10 +63,10 @@ class Misc(commands.Cog):
             embed.description = "{}/blob/prod/{}#L{}-L{}".format(source_url, location, firstlineno,
                                                                  firstlineno + len(lines) - 1)
         else:
-            embed.description = "<{}/blob/prod/{}#L{}-L{}>\n```Python\n{}```".format(source_url, location,
-                                                                                     firstlineno,
-                                                                                     firstlineno + len(lines) - 1,
-                                                                                     sourcecode)
+            embed.description = "<{}/blob/prod/{}#L{}-L{}>\n```py\n{}```".format(source_url, location,
+                                                                                 firstlineno,
+                                                                                 firstlineno + len(lines) - 1,
+                                                                                 sourcecode)
         await ctx.send(embed=embed)
 
 
