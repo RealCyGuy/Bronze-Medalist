@@ -32,7 +32,10 @@ class Misc(commands.Cog):
     async def source(self, ctx: SlashContext, command: str = None):
         source_url = "https://github.com/RealCyGuy/Bronze-Medalist"
         if command is None:
-            await ctx.send(source_url)
+            embed = discord.Embed(title="Bronze Medalist's Source Code",
+                                  description=source_url + "\n\n" + "To get source for a specific command, use "
+                                                                    "`/source {command}`", colour=Colours.BRONZE)
+            await ctx.send(embed=embed)
             return
 
         not_found = embeds.error("Command not found!")
