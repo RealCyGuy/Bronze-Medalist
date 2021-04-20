@@ -46,15 +46,18 @@ class Misc(commands.Cog):
         src = obj.callback.__code__
         lines, file_start = inspect.getsourcelines(src)
         sourcecode = inspect.getsource(src).replace("```", "")
+        branch = "master"
         if obj.callback.__module__.startswith("discord"):
             location = obj.callback.__module__.replace(".", "/") + ".py"
             source_url = "https://github.com/Rapptz/discord.py"
         elif obj.callback.__module__.startswith("jishaku"):
-            return await ctx.send(embed=not_found)
+            location = obj.callback.__module__.replace(".", "/") + ".py"
+            source_url = "https://github.com/Gorialis/jishaku"
         else:
             location = os.path.relpath(src.co_filename).replace("\\", "/")
+            branch = "prod"
 
-        if obj.callback.__module__.startswith("cogs.events"):
+        if obj.callback.__module__.startswith("cogs.events") or obj.callback.__module__.startswith("jishaku"):
             prefix = self.bot.command_prefix
         else:
             prefix = "/"
@@ -64,10 +67,10 @@ class Misc(commands.Cog):
 
         file_end = file_start + len(lines) - 1
         if len(sourcecode) > 1900:
-            embed.description = "{}/blob/prod/{}#L{}-L{}".format(source_url, location, file_start, file_end)
+            embed.description = "{}/blob/{}/{}#L{}-L{}".format(source_url, branch, location, file_start, file_end)
         else:
-            embed.description = "<{}/blob/prod/{}#L{}-L{}>\n```py\n{}```".format(source_url, location, file_start,
-                                                                                 file_end, sourcecode)
+            embed.description = "<{}/blob/{}/{}#L{}-L{}>\n```py\n{}```".format(source_url, branch, location, file_start,
+                                                                               file_end, sourcecode)
         await ctx.send(embed=embed)
 
 
