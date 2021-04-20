@@ -82,7 +82,8 @@ class Misc(commands.Cog):
     @cog_ext.cog_slash(name="ping", description="Get the latency of the bot.", guild_ids=guild_ids)
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def ping(self, ctx: SlashContext):
-        embed = discord.Embed(title="Pong!", description="{:.5f}ms".format(self.bot.latency * 1000), colour=Colours.BRONZE)
+        embed = discord.Embed(title="Pong!", description="{:.5f}ms".format(self.bot.latency * 1000),
+                              colour=Colours.BRONZE)
         await ctx.send(embed=embed)
 
 
