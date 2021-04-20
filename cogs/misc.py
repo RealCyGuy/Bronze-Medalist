@@ -28,7 +28,7 @@ class Misc(commands.Cog):
     @cog_ext.cog_slash(name="source", description="Get the source code.",
                        options=[create_option(name="command", description="The command you want to get the source of.",
                                               option_type=3, required=False)], guild_ids=guild_ids)
-    @commands.cooldown(1, 2, commands.BucketType.user)
+    @commands.cooldown(1, 8, commands.BucketType.user)
     async def source(self, ctx: SlashContext, command: str = None):
         source_url = "https://github.com/RealCyGuy/Bronze-Medalist"
         if command is None:
