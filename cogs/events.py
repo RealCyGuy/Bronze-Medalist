@@ -4,12 +4,8 @@ import random
 
 import discord
 from discord.ext import commands
-from discord_slash import cog_ext, SlashContext
-from discord_slash.utils.manage_commands import create_option
 
 from core.colours import Colours
-from core.guild_ids import guild_ids
-import core.embeds as embeds
 
 
 class Events(commands.Cog):
