@@ -1,6 +1,7 @@
 # Bronze Medalist
 
 [![Codacy Badge](https://img.shields.io/codacy/grade/fa948ef2806a4d379f7079a4ce9e938b?style=for-the-badge)](https://www.codacy.com/gh/RealCyGuy/Bronze-Medalist/dashboard)
+[![Notion](https://img.shields.io/badge/Notion-:\)-cd7f32?style=for-the-badge&logo=notion)](https://www.notion.so/3bbde558b1dd4a0e8f708b8a91efde01?v=977cb57992614180b0538865a679b8d0)
 
 > Discord economy bot with slash commands made with discord.py.
 
