@@ -54,7 +54,7 @@ class Misc(commands.Cog):
         else:
             location = os.path.relpath(src.co_filename).replace("\\", "/")
 
-        if obj.callback.__module__.startswith("cogs.misc"):
+        if obj.callback.__module__.startswith("cogs.events"):
             prefix = self.bot.command_prefix
         else:
             prefix = "/"
