@@ -7,7 +7,7 @@ from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
 from discord_slash.utils.manage_commands import create_option
 
-import core.embeds as embeds
+from core import embeds
 from core.colours import Colours
 from core.guild_ids import guild_ids
 
