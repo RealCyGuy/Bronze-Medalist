@@ -1,6 +1,6 @@
 # Bronze Medalist
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/450243f080fb4e51b27a0a7f51de00a7)](https://app.codacy.com/gh/RealCyGuy/Bronze-Medalist?utm_source=github.com&utm_medium=referral&utm_content=RealCyGuy/Bronze-Medalist&utm_campaign=Badge_Grade_Settings)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/fa948ef2806a4d379f7079a4ce9e938b)](https://www.codacy.com/gh/RealCyGuy/Bronze-Medalist/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RealCyGuy/Bronze-Medalist&amp;utm_campaign=Badge_Grade)
 
 > Discord economy bot with slash commands made with discord.py.
 
