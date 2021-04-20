@@ -15,6 +15,11 @@ class Misc(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @cog_ext.cog_slash(name="about", description="Some info about this bot!", guild_ids=guild_ids)
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def about(self, ctx: SlashContext):
+        await ctx.send("I am cool bot.")
+
     @cog_ext.cog_slash(name="invite", description="Get the invite link of this bot.", guild_ids=guild_ids)
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def invite(self, ctx: SlashContext):
