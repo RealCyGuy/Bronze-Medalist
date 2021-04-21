@@ -23,12 +23,14 @@ class BronzeMedalist(commands.Bot):
         self.event_starters = list(
             map(int, str(os.environ.get("EVENT_STARTER_IDS", None)).split(","))) if os.environ.get(
             "EVENT_STARTER_IDS", None) else None
+        # Get deta key from .env
         self.deta_key = os.environ.get("DETA_KEY", None)
         if self.deta_key is None or len(self.deta_key.strip()) == 0:
             print("\nA Deta Project Key is necessary for the bot to function.\n")
             raise RuntimeError
-        # Last message event data
+        # Data for the last message event
         self.last_event = {"in_progress": False, "users": [], "channel": 0}
+        # Startup message
         print('=' * 24)
         print("Bronze Medalist")
         print("By: Cyrus")
