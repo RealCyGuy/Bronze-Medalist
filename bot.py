@@ -25,7 +25,10 @@ class BronzeMedalist(commands.Bot):
             "EVENT_STARTER_IDS", None) else None
         # Last message event data
         self.last_event = {"in_progress": False, "users": [], "channel": 0}
-        self.startup()
+        print('=' * 24)
+        print("Bronze Medalist")
+        print("By: Cyrus")
+        print('=' * 24)
 
     async def on_ready(self):
         print('-' * 24)
@@ -44,12 +47,6 @@ class BronzeMedalist(commands.Bot):
             raise RuntimeError
         deta = Deta(deta_key)
         return deta.Base(os.environ.get("DETABASE_NAME", "BronzeMedalist"))
-
-    def startup(self):
-        print('=' * 24)
-        print("Bronze Medalist")
-        print("By: Cyrus")
-        print('=' * 24)
 
     def load_cogs(self):
         for cog in self.loading_cogs:
