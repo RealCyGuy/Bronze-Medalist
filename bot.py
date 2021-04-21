@@ -1,4 +1,4 @@
-__version__ = "0.2.8"
+__version__ = "0.2.9"
 
 import os
 
@@ -23,9 +23,18 @@ class BronzeMedalist(commands.Bot):
         self.event_starters = list(
             map(int, str(os.environ.get("EVENT_STARTER_IDS", None)).split(","))) if os.environ.get(
             "EVENT_STARTER_IDS", None) else None
-        # Last message event data
+        # Get deta key from .env
+        self.deta_key = os.environ.get("DETA_KEY", None)
+        if self.deta_key is None or len(self.deta_key.strip()) == 0:
+            print("\nA Deta Project Key is necessary for the bot to function.\n")
+            raise RuntimeError
+        # Data for the last message event
         self.last_event = {"in_progress": False, "users": [], "channel": 0}
-        self.startup()
+        # Startup message
+        print('=' * 24)
+        print("Bronze Medalist")
+        print("By: Cyrus")
+        print('=' * 24)
 
     async def on_ready(self):
         print('-' * 24)
@@ -38,18 +47,8 @@ class BronzeMedalist(commands.Bot):
         print("I am logged in and ready!")
 
     def db(self):
-        deta_key = os.environ.get("DETA_KEY", None)
-        if deta_key is None or len(deta_key.strip()) == 0:
-            print("\nA Deta Project Key is necessary for the bot to function.\n")
-            raise RuntimeError
-        deta = Deta(deta_key)
+        deta = Deta(self.deta_key)
         return deta.Base(os.environ.get("DETABASE_NAME", "BronzeMedalist"))
-
-    def startup(self):
-        print('=' * 24)
-        print("Bronze Medalist")
-        print("By: Cyrus")
-        print('=' * 24)
 
     def load_cogs(self):
         for cog in self.loading_cogs:

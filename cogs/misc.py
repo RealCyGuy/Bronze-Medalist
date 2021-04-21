@@ -28,7 +28,7 @@ class Misc(commands.Cog):
     @cog_ext.cog_slash(name="source", description="Get the source code.",
                        options=[create_option(name="command", description="The command you want to get the source of.",
                                               option_type=3, required=False)], guild_ids=guild_ids)
-    @commands.cooldown(1, 2, commands.BucketType.user)
+    @commands.cooldown(1, 8, commands.BucketType.user)
     async def source(self, ctx: SlashContext, command: str = None):
         source_url = "https://github.com/RealCyGuy/Bronze-Medalist"
         if command is None:
@@ -77,6 +77,13 @@ class Misc(commands.Cog):
         else:
             embed.description = "<{}/blob/{}/{}#L{}-L{}>\n```py\n{}```".format(source_url, branch, location, file_start,
                                                                                file_end, sourcecode)
+        await ctx.send(embed=embed)
+
+    @cog_ext.cog_slash(name="ping", description="Get the latency of the bot.", guild_ids=guild_ids)
+    @commands.cooldown(1, 2, commands.BucketType.user)
+    async def ping(self, ctx: SlashContext):
+        embed = discord.Embed(title="Pong!", description="{:.5f}ms".format(self.bot.latency * 1000),
+                              colour=Colours.BRONZE)
         await ctx.send(embed=embed)
 
 

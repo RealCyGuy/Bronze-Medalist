@@ -1,6 +1,7 @@
 # Bronze Medalist
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/fa948ef2806a4d379f7079a4ce9e938b)](https://www.codacy.com/gh/RealCyGuy/Bronze-Medalist/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RealCyGuy/Bronze-Medalist&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://img.shields.io/codacy/grade/fa948ef2806a4d379f7079a4ce9e938b?style=for-the-badge)](https://www.codacy.com/gh/RealCyGuy/Bronze-Medalist/dashboard)
+[![Notion](https://img.shields.io/badge/Notion-:\)-cd7f32?style=for-the-badge&logo=notion)](https://www.notion.so/3bbde558b1dd4a0e8f708b8a91efde01?v=977cb57992614180b0538865a679b8d0)
 
 > Discord economy bot with slash commands made with discord.py.
 
@@ -26,7 +27,7 @@ Then you can run `bot.py` to start the bot.
   permissions.
 - `PREFIX` - Custom prefix for starting events and using the jishaku module. Defaults to b.
 - `JISHAKU_NO_UNDERSCORE` - Don't use underscores for jishaku's repl if set to true.
-- `INVITE` - Custom invite link for the invite command.
+- `INVITE` - Custom invite link (like <https://bronzemedalist.netlify.app/invite>) for the invite command.
 
 ## Events
 
