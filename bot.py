@@ -23,6 +23,10 @@ class BronzeMedalist(commands.Bot):
         self.event_starters = list(
             map(int, str(os.environ.get("EVENT_STARTER_IDS", None)).split(","))) if os.environ.get(
             "EVENT_STARTER_IDS", None) else None
+        self.deta_key = os.environ.get("DETA_KEY", None)
+        if self.deta_key is None or len(self.deta_key.strip()) == 0:
+            print("\nA Deta Project Key is necessary for the bot to function.\n")
+            raise RuntimeError
         # Last message event data
         self.last_event = {"in_progress": False, "users": [], "channel": 0}
         print('=' * 24)
@@ -41,11 +45,7 @@ class BronzeMedalist(commands.Bot):
         print("I am logged in and ready!")
 
     def db(self):
-        deta_key = os.environ.get("DETA_KEY", None)
-        if deta_key is None or len(deta_key.strip()) == 0:
-            print("\nA Deta Project Key is necessary for the bot to function.\n")
-            raise RuntimeError
-        deta = Deta(deta_key)
+        deta = Deta(self.deta_key)
         return deta.Base(os.environ.get("DETABASE_NAME", "BronzeMedalist"))
 
     def load_cogs(self):
