@@ -1,2 +1,3 @@
 applications:
-- name: bronze-medalisst
+- name: Bronze Medalist
+  command: python bot.py
