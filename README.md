@@ -12,7 +12,7 @@ bot [here](https://discord.com/api/oauth2/authorize?client_id=820018018490646538
 
 ## Hosting
 
-You can host on heroku or ibm's cloud foundry or locally. In any case, you need to have a `.env` with `TOKEN` (from discord developer portal)
+You can host on heroku or ibm's cloud foundry or locally. In any case, you need to have a `.env`/environment variables with `TOKEN` (from discord developer portal)
 and `DETA_KEY` (from <https://deta.sh>).
 
 Make sure to enable all priviliged intents.
