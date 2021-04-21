@@ -2,6 +2,7 @@ name: Deploy to IBM Cloud Foundry
 on:
   push:
     branches: [ prod ]
+  workflow_dispatch:
 jobs:
   deploy:
     runs-on: ubuntu-latest
