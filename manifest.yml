@@ -1,3 +1,4 @@
 applications:
 - name: Bronze Medalist
   command: python bot.py
+  health-check-type: process
