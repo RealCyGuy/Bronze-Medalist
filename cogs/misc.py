@@ -6,6 +6,7 @@ from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
 from discord_slash.utils.manage_commands import create_option
 
+from bot import __version__
 from core import embeds
 from core.colours import Colours
 from core.guild_ids import guild_ids
@@ -18,16 +19,25 @@ class Misc(commands.Cog):
     @cog_ext.cog_slash(name="about", description="Some info about this bot!", guild_ids=guild_ids)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def about(self, ctx: SlashContext):
-        embed = discord.Embed(title="Bronze Medalist", colour=Colours.BRONZE)
+        embed = discord.Embed(
+            description="...is a currency bot with :third_place: as its currency! To start earning medals, type `/compete`. You can look at all the commands by typing `/` then scrolling through my commands!",
+            colour=Colours.BRONZE)
+        embed.set_author(name="Bronze Medalist", url="https://bronzemedalist.netlify.app")
+        embed.set_thumbnail(url=self.bot.user.avatar_url)
+        embed.add_field(name="Servers", value=str(len(self.bot.guilds)))
+        embed.add_field(name="Version", value=__version__)
+        embed.add_field(name="\u200b", value="\u200b")
+        embed.add_field(name="Invite link", value=f"[Click me]({self.bot.invite} \"{self.bot.invite}\")")
+        embed.add_field(name="GitHub",
+                        value="[Click me](https://github.com/realcyguy/bronze-medalist \"realcyguy/bronze-medalist\")")
+        embed.add_field(name="Website",
+                        value=f"[Click me](https://bronzemedalist.netlify.app \"bronzemedalist.netlify.app\")")
         await ctx.send(embed=embed)
 
     @cog_ext.cog_slash(name="invite", description="Get the invite link of this bot.", guild_ids=guild_ids)
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def invite(self, ctx: SlashContext):
-        invite = "https://discord.com/api/oauth2/authorize?client_id=" + str(
-            self.bot.user.id) + "&permissions=2048&scope=applications.commands%20bot"
-        invite = os.environ.get("INVITE", invite)
-        embed = discord.Embed(description=f"You can invite me to your server with my [invite link]({invite})!",
+        embed = discord.Embed(description=f"You can invite me to your server with my [invite link]({self.bot.invite})!",
                               colour=Colours.BRONZE)
         await ctx.send(embed=embed)
 
