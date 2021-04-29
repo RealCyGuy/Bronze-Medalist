@@ -1,7 +1,10 @@
 # Bronze Medalist
 
+<https://bronzemedalist.netlify.app/>
+
 [![Codacy Badge](https://img.shields.io/codacy/grade/fa948ef2806a4d379f7079a4ce9e938b?style=for-the-badge)](https://www.codacy.com/gh/RealCyGuy/Bronze-Medalist/dashboard)
 [![Notion](https://img.shields.io/badge/Notion-:\)-cd7f32?style=for-the-badge&logo=notion)](https://www.notion.so/3bbde558b1dd4a0e8f708b8a91efde01?v=977cb57992614180b0538865a679b8d0)
+[![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/realcyguy/bronze-medalist/Deploy%20to%20IBM%20Cloud%20Foundry/prod?style=for-the-badge)](https://github.com/RealCyGuy/Bronze-Medalist/actions/workflows/deploy.yml)
 
 > Discord economy bot with slash commands made with discord.py.
 
@@ -12,7 +15,7 @@ bot [here](https://discord.com/api/oauth2/authorize?client_id=820018018490646538
 
 ## Hosting
 
-You can host on heroku or locally. In any case, you need to have a `.env` with `TOKEN` (from discord developer portal)
+You can host on heroku or ibm's cloud foundry or locally. In any case, you need to have a `.env`/environment variables with `TOKEN` (from discord developer portal)
 and `DETA_KEY` (from <https://deta.sh>).
 
 Make sure to enable all priviliged intents.

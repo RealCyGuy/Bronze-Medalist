@@ -1,4 +1,4 @@
-__version__ = "0.2.9"
+__version__ = "0.2.10"
 
 import os
 
@@ -16,7 +16,7 @@ load_dotenv()
 class BronzeMedalist(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(command_prefix=os.environ.get("PREFIX", "b."),
-                         activity=discord.Game("bronze medals op | v" + __version__),
+                         activity=discord.Game("bronze medals op | /about | v" + __version__),
                          intents=discord.Intents.all(), *args, **kwargs)
         self.remove_command("help")
         self.loading_cogs = ["cogs.currency", "cogs.events", "cogs.misc", "jishaku"]
@@ -45,6 +45,10 @@ class BronzeMedalist(commands.Bot):
         print(f"Bot version: {__version__}")
         print('-' * 24)
         print("I am logged in and ready!")
+        # Invite link
+        self.invite = "https://discord.com/api/oauth2/authorize?client_id=" + str(
+            self.user.id) + "&permissions=2048&scope=applications.commands%20bot"
+        self.invite = os.environ.get("INVITE", self.invite)
 
     def db(self):
         deta = Deta(self.deta_key)
