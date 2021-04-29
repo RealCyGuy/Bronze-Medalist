@@ -25,7 +25,7 @@ class Misc(commands.Cog):
         embed.set_author(name="Bronze Medalist", url="https://bronzemedalist.netlify.app")
         embed.set_thumbnail(url=self.bot.user.avatar_url)
         embed.add_field(name="Servers", value=str(len(self.bot.guilds)))
-        embed.add_field(name="Version", value=__version__)
+        embed.add_field(name="Version", value="v" + __version__)
         embed.add_field(name="\u200b", value="\u200b")
         embed.add_field(name="Invite link", value=f"[Click me]({self.bot.invite} \"{self.bot.invite}\")")
         embed.add_field(name="GitHub",
