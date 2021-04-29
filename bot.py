@@ -36,6 +36,10 @@ class BronzeMedalist(commands.Bot):
         print(f"Bot version: {__version__}")
         print('-' * 24)
         print("I am logged in and ready!")
+        # Invite link
+        self.invite = "https://discord.com/api/oauth2/authorize?client_id=" + str(
+            self.user.id) + "&permissions=2048&scope=applications.commands%20bot"
+        self.invite = os.environ.get("INVITE", self.invite)
 
     def db(self):
         deta_key = os.environ.get("DETA_KEY", None)
