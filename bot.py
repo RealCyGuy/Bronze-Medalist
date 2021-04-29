@@ -16,7 +16,7 @@ load_dotenv()
 class BronzeMedalist(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(command_prefix=os.environ.get("PREFIX", "b."),
-                         activity=discord.Game("bronze medals op | v" + __version__),
+                         activity=discord.Game("bronze medals op | /about | v" + __version__),
                          intents=discord.Intents.all(), *args, **kwargs)
         self.remove_command("help")
         self.loading_cogs = ["cogs.currency", "cogs.events", "cogs.misc", "jishaku"]
