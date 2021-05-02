@@ -1,10 +1,12 @@
 import inspect
 import os
+from datetime import datetime
 
 import discord
 from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
 from discord_slash.utils.manage_commands import create_option
+from humanize import precisedelta
 
 from bot import __version__
 from core import embeds
@@ -24,14 +26,18 @@ class Misc(commands.Cog):
             colour=Colours.BRONZE)
         embed.set_author(name="Bronze Medalist", url="https://bronzemedalist.netlify.app")
         embed.set_thumbnail(url=self.bot.user.avatar_url)
-        embed.add_field(name="Servers", value=str(len(self.bot.guilds)))
         embed.add_field(name="Version", value="v" + __version__)
+        embed.add_field(name="Servers", value=str(len(self.bot.guilds)))
+        embed.add_field(name="Medals", value="{:,}".format(self.bot.medals))
+        embed.add_field(name="Latency", value="{:.3f}ms".format(self.bot.latency * 1000))
+        embed.add_field(name="Uptime", value=precisedelta(datetime.now() - self.bot.startup))
         embed.add_field(name="\u200b", value="\u200b")
         embed.add_field(name="Invite link", value=f"[Click me]({self.bot.invite} \"{self.bot.invite}\")")
         embed.add_field(name="GitHub",
                         value="[Click me](https://github.com/realcyguy/bronze-medalist \"realcyguy/bronze-medalist\")")
         embed.add_field(name="Website",
                         value=f"[Click me](https://bronzemedalist.netlify.app \"bronzemedalist.netlify.app\")")
+        embed.set_footer(text="Made by RealCyGuy#0873!")
         await ctx.send(embed=embed)
 
     @cog_ext.cog_slash(name="invite", description="Get the invite link of this bot.", guild_ids=guild_ids)

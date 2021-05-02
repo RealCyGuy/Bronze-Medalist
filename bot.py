@@ -1,10 +1,11 @@
 __version__ = "0.2.10"
 
 import os
+from datetime import datetime
 
 import discord
 from deta import Deta
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord_slash import SlashCommand
 from dotenv import load_dotenv
 
@@ -30,6 +31,10 @@ class BronzeMedalist(commands.Bot):
             raise RuntimeError
         # Data for the last message event
         self.last_event = {"in_progress": False, "users": [], "channel": 0}
+        # Startup time
+        self.startup = datetime.now()
+        # Startup total medals
+        self.medals = 0
         # Startup message
         print('=' * 24)
         print("Bronze Medalist")
@@ -49,6 +54,8 @@ class BronzeMedalist(commands.Bot):
         self.invite = "https://discord.com/api/oauth2/authorize?client_id=" + str(
             self.user.id) + "&permissions=2048&scope=applications.commands%20bot"
         self.invite = os.environ.get("INVITE", self.invite)
+        # Start total medals loop
+        self.update_medals.start()
 
     def db(self):
         deta = Deta(self.deta_key)
@@ -78,6 +85,15 @@ class BronzeMedalist(commands.Bot):
             await context.send(embed=embed)
         else:
             raise exception
+
+    @tasks.loop(minutes=3)
+    async def update_medals(self):
+        query = [{"medals?gt": 0}]
+        medals = 0
+        for page in self.db().fetch(query=query):
+            for user in page:
+                medals += user["medals"]
+        self.medals = medals
 
 
 bot = BronzeMedalist()
