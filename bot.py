@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 
 import discord
+import sentry_sdk
 from deta import Deta
 from discord.ext import commands, tasks
 from discord_slash import SlashCommand
@@ -12,6 +13,7 @@ from dotenv import load_dotenv
 from core.colours import Colours
 
 load_dotenv()
+sentry_sdk.init(traces_sample_rate=1.0, release=__version__)
 
 
 class BronzeMedalist(commands.Bot):
@@ -86,6 +88,15 @@ class BronzeMedalist(commands.Bot):
             await context.send(embed=embed)
         else:
             raise exception
+
+    async def on_command_error(self, context, exception):
+        if isinstance(exception, commands.CheckFailure):
+            pass
+        else:
+            raise exception
+
+    async def on_error(self, event_method, *args, **kwargs):
+        raise
 
     @tasks.loop(minutes=3)
     async def update_medals(self):
