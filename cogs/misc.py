@@ -37,7 +37,7 @@ class Misc(commands.Cog):
                         value="[Click me](https://github.com/realcyguy/bronze-medalist \"realcyguy/bronze-medalist\")")
         embed.add_field(name="Website",
                         value=f"[Click me](https://bronzemedalist.netlify.app \"bronzemedalist.netlify.app\")")
-        embed.set_footer(text="Made by RealCyGuy#0873!")
+        embed.set_footer(text="Made by RealCyGuy#1919!")
         await ctx.send(embed=embed)
 
     @cog_ext.cog_slash(name="invite", description="Get the invite link of this bot.", guild_ids=guild_ids)
